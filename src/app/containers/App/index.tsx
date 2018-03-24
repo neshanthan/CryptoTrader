@@ -2,7 +2,7 @@ const appConfig = require('../../../../config/main');
 
 import * as React from 'react';
 import { Helmet } from 'react-helmet';
-import { Header } from 'components';
+import Header from '../../components/Header/index';
 
 const style = require('./style.css');
 
