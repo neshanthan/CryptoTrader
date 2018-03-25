@@ -8,15 +8,13 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
-import AccountCircle from 'material-ui-icons/AccountCircle';
 
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import List from 'material-ui/List';
 const classnames = require('classnames');
 
-import Menu, { MenuList, MenuItem } from 'material-ui/Menu';
+import { MenuList, MenuItem } from 'material-ui/Menu';
 import { ListItemIcon, ListItemText } from 'material-ui/List';
 import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
@@ -25,6 +23,7 @@ import SendIcon from 'material-ui-icons/Send';
 const { connect } = require('react-redux');
 export interface IProps {
   memberManager: IMember;
+  Child: any;
 }
 
 const drawerWidth = 240;
@@ -148,64 +147,67 @@ class Header extends React.Component<IProps & WithStyles<'root'>> {
         </div>
         <Divider />
         <MenuList>
-        <MenuItem component={Link} href="/" className={classes.menuItem}>
+        <Link to="/">
+        <MenuItem className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <SendIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
-        <MenuItem component={Link} href="login" className={classes.menuItem}>
+        </Link>
+        <Link to="login">
+        <MenuItem className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <DraftsIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
         </MenuItem>
-        <MenuItem component={Link} href="member" className={classes.menuItem}>
+        </Link>
+        <Link to="member">
+        <MenuItem className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <InboxIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
         </MenuItem>
+        </Link>
       </MenuList>
       </Drawer>
     );
 
-    console.log(classes.appBar);
-
     return (
       <div className={classes.root}>
-        <div className={classes.appFrame}>
-          <AppBar className={classnames({
-            [`${classes.appBar}`]: true,
-            [`${classes.appBarShift}`]: open,
-            [`${classes.appBarShiftLeft}`]: open,
-            })} >
-            <Toolbar disableGutters={!open}>
-              <IconButton className={classnames({[`${classes.menuButton}`]: true, [`${classes.hide}`]: open })}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerOpen}
+          <div className={classes.appFrame}>
+            <AppBar className={classnames({
+              [`${classes.appBar}`]: true,
+              [`${classes.appBarShift}`]: open,
+              [`${classes.appBarShiftLeft}`]: open,
+              })} >
+              <Toolbar disableGutters={!open}>
+                <IconButton className={classnames({[`${classes.menuButton}`]: true, [`${classes.hide}`]: open })}
+                color="inherit"
+                aria-label="open drawer"
+                onClick={this.handleDrawerOpen}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="title" color="inherit" noWrap={true}>
+                Write Header
+                </Typography>
+              </Toolbar>
+            </AppBar>
+            {drawer}
+            <main
+                className={classnames({
+                  [`${classes.content}`]: true,
+                  [`${classes.contentLeft}`]: true,
+                  [`${classes.contentShift}`]: open,
+                  [`${classes.contentShiftLeft}`]: open,
+                })}
               >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="title" color="inherit" noWrap={true}>
-                {this.props.children}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          {drawer}
-          <main
-              className={classnames({
-                [`${classes.content}`]: true,
-                [`${classes.contentLeft}`]: true,
-                [`${classes.contentShift}`]: open,
-                [`${classes.contentShiftLeft}`]: open,
-              })}
-            >
-              <div className={classes.drawerHeader} />
-              <Typography>{'You think water moves fast? You should see ice.'}</Typography>
-        </main>
-        </div>
+              a
+          </main>
+          </div>
       </div>
     );
   }

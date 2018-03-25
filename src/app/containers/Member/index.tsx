@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Header from '../../components/Header/index';
 import { logout, changePassword, lockAccount } from 'modules/member/';
 import { IMember } from 'models/member';
 import { IMemberAction } from 'models/member';
@@ -45,7 +44,6 @@ class Member extends React.Component<IProps, IState> {
 
     return (
       <div className={style.Member}>
-      <Header>Account Details</Header>
       <br/>
         <button
           name="incBtn"

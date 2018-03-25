@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { login } from 'modules/member';
 import { IMember, IMemberAction } from 'models/member';
-import Header from '../../components/Header/index';
 const { connect } = require('react-redux');
 // const { asyncConnect } = require('redux-connect');
 const style = require('./style.css');
@@ -24,7 +23,6 @@ class Login extends React.Component<IProps, {}> {
 
     return (
       <div className={style.Login}>
-      <Header>Login</Header>
         {member.request.isFetching ? 'Loging in' : member.username}
       </div>
     );
