@@ -1,0 +1,15 @@
+body{
+	font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	background: #fff url(../images/bg.jpg) repeat top left;
+	font-weight: 400;
+	font-size: 15px;
+	color: #1d3c41;
+	overflow-y: scroll;
+}
+
+.container{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	text-align: center;
+}
