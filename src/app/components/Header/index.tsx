@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { Link } from 'react-router';
+import { Link } from 'react-router';
 import { IMember } from 'models/member';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import withRoot from '../withRoot';
@@ -9,13 +9,18 @@ import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
-import Menu, { MenuItem } from 'material-ui/Menu';
 
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import List from 'material-ui/List';
 const classnames = require('classnames');
+
+import Menu, { MenuList, MenuItem } from 'material-ui/Menu';
+import { ListItemIcon, ListItemText } from 'material-ui/List';
+import InboxIcon from 'material-ui-icons/MoveToInbox';
+import DraftsIcon from 'material-ui-icons/Drafts';
+import SendIcon from 'material-ui-icons/Send';
 
 const { connect } = require('react-redux');
 export interface IProps {
@@ -142,9 +147,26 @@ class Header extends React.Component<IProps & WithStyles<'root'>> {
           </IconButton>
         </div>
         <Divider />
-        <List>Hello</List>
-        <Divider />
-        <List>Hello</List>
+        <MenuList>
+        <MenuItem component={Link} href="/" className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
+        </MenuItem>
+        <MenuItem component={Link} href="login" className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
+        </MenuItem>
+        <MenuItem component={Link} href="member" className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
+        </MenuItem>
+      </MenuList>
       </Drawer>
     );
 
