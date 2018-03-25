@@ -13,6 +13,7 @@
       "single",
       "jsx-double"
     ],
+    "jsx-no-multiline-js": 0,
     "no-var-requires": false,
     "ordered-imports": false,
     "member-ordering": [

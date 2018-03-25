@@ -11,21 +11,90 @@ import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
+import Drawer from 'material-ui/Drawer';
+import Divider from 'material-ui/Divider';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import List from 'material-ui/List';
+const classnames = require('classnames');
+
 const { connect } = require('react-redux');
 export interface IProps {
   memberManager: IMember;
 }
 
-const styles: StyleRulesCallback<'root'> = ({}) => ({ // You can use the 'theme' variable for styling
+const drawerWidth = 240;
+
+const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'theme' variable for styling
   root: {
     flexGrow: 1,
+    display: 'flex',
   },
   flex: {
     flex: 1,
   },
+  appFrame: {
+    height: '100%',
+    zIndex: 1,
+    overflow: 'hidden',
+    position: 'relative',
+    display: 'flex',
+    width: '100%',
+  },
   menuButton: {
-    marginLeft: -12,
+    marginLeft: 12,
     marginRight: 20,
+  },
+  appBar: {
+    position: 'absolute',
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  appBarShiftLeft: {
+    marginLeft: drawerWidth,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawerPaper: {
+    position: 'relative',
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  contentLeft: {
+    marginLeft: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  contentShiftLeft: {
+    marginLeft: 0,
   },
 });
 @connect(
@@ -45,54 +114,76 @@ class Header extends React.Component<IProps & WithStyles<'root'>> {
 
   public state = {
     auth: true,
-    anchorEl: null,
     open: false,
   };
 
-  private handleMenu = (event) => {
-    this.setState({ anchorEl: event.currentTarget });
+  private handleDrawerOpen = () => {
+    this.setState({ open: true });
   }
 
-  private handleClose = () => {
-    this.setState({ anchorEl: null });
+  private handleDrawerClose = () => {
+    this.setState({ open: false });
   }
 
   public render() {
 
-    const classes = (this.props.classes as any); // Using any so type doesn't need to be implemented
+    const { classes } = this.props as any;
     // const { classes } = this.props;
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
+    const { anchor, open } = this.state as any;
+
+    const drawer = (
+      <Drawer variant="persistent" anchor={anchor} open={open} classes={{ paper: classes.drawerPaper}}>
+        <div className={classes.drawerHeader}>
+          <Typography variant="title" color="inherit" noWrap={true}>
+                CryptoTrader
+          </Typography>
+          <IconButton onClick={this.handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>Hello</List>
+        <Divider />
+        <List>Hello</List>
+      </Drawer>
+    );
+
+    console.log(classes.appBar);
 
     return (
       <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
-              {this.props.children}
-            </Typography>
-                <div>
-                <IconButton aria-owns={open ? 'menu-appbar' : null}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit">
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                </Menu>
-              </div>
-          </Toolbar>
-        </AppBar>
+        <div className={classes.appFrame}>
+          <AppBar className={classnames({
+            [`${classes.appBar}`]: true,
+            [`${classes.appBarShift}`]: open,
+            [`${classes.appBarShiftLeft}`]: open,
+            })} >
+            <Toolbar disableGutters={!open}>
+              <IconButton className={classnames({[`${classes.menuButton}`]: true, [`${classes.hide}`]: open })}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="title" color="inherit" noWrap={true}>
+                {this.props.children}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          {drawer}
+          <main
+              className={classnames({
+                [`${classes.content}`]: true,
+                [`${classes.contentLeft}`]: true,
+                [`${classes.contentShift}`]: open,
+                [`${classes.contentShiftLeft}`]: open,
+              })}
+            >
+              <div className={classes.drawerHeader} />
+              <Typography>{'You think water moves fast? You should see ice.'}</Typography>
+        </main>
+        </div>
       </div>
     );
   }
