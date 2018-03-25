@@ -1,5 +1,6 @@
 import * as React from 'react';
 // import { Link } from 'react-router';
+import { IMemberManager } from 'models/membermanager';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import withRoot from '../withRoot';
 import AppBar from 'material-ui/AppBar';
@@ -10,12 +11,10 @@ import MenuIcon from 'material-ui-icons/Menu';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
-// import { IMember } from 'models/member';
-
-// const style = require('./style.css');
-// interface IProps {
-//   member: IMember;
-// }
+const { connect } = require('react-redux');
+export interface IProps {
+  memberManager: IMemberManager;
+}
 
 const styles: StyleRulesCallback<'root'> = ({}) => ({ // You can use the 'theme' variable for styling
   root: {
@@ -29,14 +28,21 @@ const styles: StyleRulesCallback<'root'> = ({}) => ({ // You can use the 'theme'
     marginRight: 20,
   },
 });
+@connect(
+  (state) => ({counter: state.counter, memberManager: state }),
+  (dispatch) => ({
+    decrement: () => dispatch(),
+    increment: () => dispatch(),
+  }),
+)
 
-interface IState  {
-  open: boolean;
-  auth: boolean;
-  anchorEl: any;
-};
+class Header extends React.Component<IProps & WithStyles<'root'>> {
 
-export class Header extends React.Component<IState & WithStyles<'root'>> {
+  public constructor(props) {
+    super(props);
+    console.log('Nesh', this.props);
+  }
+
   public state = {
     auth: true,
     anchorEl: null,
@@ -53,7 +59,8 @@ export class Header extends React.Component<IState & WithStyles<'root'>> {
 
   public render() {
 
-    const { classes } = this.props;
+    const classes = (this.props.classes as any); // Using any so type doesn't need to be implemented
+    // const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
@@ -61,11 +68,11 @@ export class Header extends React.Component<IState & WithStyles<'root'>> {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className="" color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />
             </IconButton>
-            <Typography variant="title" color="inherit" className="">
-              Title
+            <Typography variant="title" color="inherit" className={classes.flex}>
+              {this.props.children}
             </Typography>
                 <div>
                 <IconButton aria-owns={open ? 'menu-appbar' : null}
