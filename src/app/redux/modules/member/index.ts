@@ -4,6 +4,7 @@ import { IOpenTrade } from 'models/opentrade';
 import { IAlert } from 'models/alert';
 
 /** Action Types */
+export const LOGIN: string = 'member/LOGIN';
 export const LOGOUT: string = 'member/LOGOUT';
 export const CHANGEPASSWORD: string = 'member/CHANGEPASSWORD';
 export const LOCKACCOUNT: string = 'member/LOCKACCOUNT';
@@ -31,6 +32,10 @@ const initialState: IMember = {
   prefferedFiat: 'asd',
   sessionID: 'asd',
   type: 'real',
+  request: {
+    isFetching: false,
+    error: false,
+  },
 };
 
 /** Reducer: memberReducer */
@@ -55,6 +60,34 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
         lockUntilDate: action.payload.newLockDate,
       };
 
+    case REQUESTSTART:
+      return {
+        ...state,
+        request: {
+          isFetching: true,
+        },
+      };
+
+    case REQUESTSUCCESS:
+      return {
+        ...state,
+        request: {
+          isFetching: false,
+          message: action.payload.message,
+          error: false,
+        },
+      };
+
+    case REQUESTFAILURE:
+      return {
+        ...state,
+        request: {
+          isFetching: false,
+          message: action.payload.message,
+          error: true,
+        },
+      };
+
     default:
       return state;
   }
@@ -69,7 +102,7 @@ export function logout(): IMemberAction {
 
 /** Action Creator: Change the user password */
 export function changePassword(newPassword: string): IMemberAction {
-  newPassword = newPassword + 'replacewithhash';
+  newPassword = hashPassword(newPassword);
   return {
     type: CHANGEPASSWORD,
     payload: {
@@ -190,6 +223,9 @@ export function changeDetails(details: IOpenTrade): IMemberAction {
 export function requestStart(): IMemberAction {
   return {
     type: REQUESTSTART,
+    payload: {
+      isFetching: true,
+    },
   };
 }
 
@@ -199,6 +235,8 @@ export function requestSuccess(message: any): IMemberAction {
     type: REQUESTSUCCESS,
     payload: {
       message,
+      error: false,
+      isFetching: false,
     },
   };
 }
@@ -209,6 +247,26 @@ export function requestFailure(message: any): IMemberAction {
     type: REQUESTFAILURE,
     payload: {
       message,
+      error: true,
+      isFetching: false,
     },
   };
+}
+
+/** Action Creator: Logout the user */
+export function login(username, password) {
+  password = hashPassword(password);
+  return (dispatch: any) => {
+    dispatch(requestStart());
+    if (username === 'test' && password === 'test1234replacewithhash') {
+      dispatch(requestSuccess('You have logged into sucessfully'));
+    } else {
+      dispatch(requestFailure('The username is incorrect'));
+    }
+  };
+}
+
+/** Password Hashing Function */
+export function hashPassword(password): string {
+  return password + 'replacewithhash';
 }

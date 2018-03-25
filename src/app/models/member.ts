@@ -14,6 +14,11 @@ export interface IMember {
   coinPortfolio?: ICoinRecord[];
   openTrade?: IOpenTrade[]; // Can have 0 or many open trades
   type: string; // If its real or practiseMember
+  request: {
+    message?: any;
+    isFetching: boolean;
+    error: boolean;
+  };
 }
 
 export interface IMemberAction {
@@ -22,5 +27,7 @@ export interface IMemberAction {
     newPassword?: string;
     newLockDate?: Date;
     message?: any;
+    isFetching?: boolean;
+    error?: boolean;
   };
 }

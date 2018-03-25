@@ -1,6 +1,6 @@
 import * as React from 'react';
 // import { Link } from 'react-router';
-import { IMemberManager } from 'models/membermanager';
+import { IMember } from 'models/member';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import withRoot from '../withRoot';
 import AppBar from 'material-ui/AppBar';
@@ -13,7 +13,7 @@ import Menu, { MenuItem } from 'material-ui/Menu';
 
 const { connect } = require('react-redux');
 export interface IProps {
-  memberManager: IMemberManager;
+  memberManager: IMember;
 }
 
 const styles: StyleRulesCallback<'root'> = ({}) => ({ // You can use the 'theme' variable for styling
@@ -29,7 +29,7 @@ const styles: StyleRulesCallback<'root'> = ({}) => ({ // You can use the 'theme'
   },
 });
 @connect(
-  (state) => ({counter: state.counter, memberManager: state }),
+  (state) => ({counter: state.counter, member: state }),
   (dispatch) => ({
     decrement: () => dispatch(),
     increment: () => dispatch(),
