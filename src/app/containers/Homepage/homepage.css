@@ -1,0 +1,38 @@
+html{background-color:white; font-family:"verdana";}
+a{padding:5px; text-decoration:none; color:black;}
+
+div#container{text-align:center;}
+div#container{width:1000px;margin:0 auto;}
+div#container{background-color:white;}
+
+div#container ul{float:right;}
+
+div#header h1{height:170px;line-height:80px;margin:0;padding-left:10px;}
+
+
+div#content{float:left;width:680px; height:600px;}
+div#content{background-color:white;}
+div#content{text-align:left;}
+
+div#content_pad{padding:10px;}
+div#content_pad h3{color: #ff0000;}
+div#content_pad h6{color:grey;}
+
+div#register{width:220px; padding: 30px;}
+div#register{background-color:white;}
+
+div#login{width:220px; padding: 30px;}
+div#login{background-color:white;}
+
+
+.register {color:#0066ff;}
+.register {border: solid 2px #0066ff;}
+.register {border-radius: 0px;}
+.register {padding: 15px 75px;}
+.register:hover {background-color: #0066ff; color: #fff;}
+
+.login {color:#0066ff;}
+.login {border: solid 2px #0066ff;}
+.login {border-radius: 0px;}
+.login {padding: 15px 80px;}
+.login:hover {background-color: #0066ff; color: #fff;
