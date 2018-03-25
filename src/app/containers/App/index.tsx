@@ -165,30 +165,24 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
         </div>
         <Divider />
         <MenuList>
-        <Link to="/">
-        <MenuItem className={classes.menuItem}>
+        <MenuItem component={Link} {...{ to: '/' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <SendIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
-        </Link>
-        <Link to="login">
-        <MenuItem className={classes.menuItem}>
+        <MenuItem component={Link} {...{ to: 'login' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <DraftsIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
         </MenuItem>
-        </Link>
-        <Link to="member">
-        <MenuItem className={classes.menuItem}>
+        <MenuItem component={Link} {...{ to: 'member' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
             <InboxIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
         </MenuItem>
-        </Link>
       </MenuList>
       </Drawer>
     );
