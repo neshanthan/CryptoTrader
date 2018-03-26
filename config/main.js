@@ -10,7 +10,7 @@ var config = {
   app: {
     head: {
       title: 'CryptoTrader',
-      titleTemplate: 'CryptoTrader: %s',
+      titleTemplate: '',
       meta: [
         { charset: 'utf-8' },
         { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' },
