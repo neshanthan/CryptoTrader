@@ -21,6 +21,7 @@ export const CHANGEDETAILS: string = 'member/CHANGEDETAILS';
 export const REQUESTSTART: string = 'member/REQUESTSTART';
 export const REQUESTSUCCESS: string = 'member/REQUESTSUCCESS';
 export const REQUESTFAILURE: string = 'member/REQUESTFAILURE';
+export const REQUESTRESET: string = 'member/REQUESTRESET';
 
 /** Member: Initial State */
 const initialState: IMember = {
@@ -96,6 +97,16 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
         },
       };
 
+    case REQUESTRESET:
+      return {
+        ...state,
+        request: {
+          isFetching: false,
+          message: 'RESET',
+          error: false,
+        },
+    };
+
     default:
       return state;
   }
@@ -105,6 +116,13 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
 export function logout(): IMemberAction {
   return {
     type: LOGOUT,
+  };
+}
+
+/** Action Creator: Logout the user */
+export function resetRequest(): IMemberAction {
+  return {
+    type: REQUESTRESET,
   };
 }
 
