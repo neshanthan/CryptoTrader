@@ -22,8 +22,6 @@ import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
 import SendIcon from 'material-ui-icons/Send';
 
-import Grid from 'material-ui/Grid';
-
 const { connect } = require('react-redux');
 export interface IProps {
   member: IMember;
@@ -233,7 +231,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
                   [`${classes.contentShiftLeft}`]: open,
                 })}
               >
-                {this.props.children}
+                <div>{this.props.children}</div>
           </div>
           </div>
       </div>

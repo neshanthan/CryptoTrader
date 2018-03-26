@@ -74,6 +74,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
           return (
               <Grid key={itema.id} item={true} xs={12}>
                 <Paper className={classes.paper}>
+                <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
                 <Typography>{itema.name}</Typography>
                 <Typography>{itema.price_usd}</Typography>
                 </Paper>
@@ -87,7 +88,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
       <div className={style.Home}>
         <Grid container={true} spacing={24} alignItems="stretch" direction="column" justify="center">
           {allcoins}
-      </Grid>
+        </Grid>
       </div>
     );
   }
