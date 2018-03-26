@@ -12,6 +12,13 @@ import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Divider from 'material-ui/Divider';
 
+import Dialog, {
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from 'material-ui/Dialog';
+
 const { connect } = require('react-redux');
 const { asyncConnect } = require('redux-connect');
 
@@ -99,12 +106,17 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     auth: true,
     open: false,
     searchTerm: 'Enter coin name...',
+    amount: '',
+    orderType: null,
+    openDialog: false,
+    orderItem: null,
   };
 
   private handleChange = (name) => (event) => {
     this.setState({
       [name]: event.target.value,
     });
+    console.log(this.state);
   }
 
   private handleClickBox = (name, itemname) => ({}) => {
@@ -116,11 +128,13 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
   public placeBuyTrade = (coin, rate, amount, exchangeID) => ({}) =>  {
     const {placeBuyTrade} = this.props;
     placeBuyTrade(coin, rate, amount, exchangeID);
+    this.setState({ openDialog: false, orderItem: null,  orderType: null, amount: ''});
   }
 
   public placeSellTrade = (coin, rate, amount, exchangeID) => ({}) => {
     const {placeSellTrade} = this.props;
     placeSellTrade(coin, rate, amount, exchangeID);
+    this.setState({ openDialog: false, orderItem: null,  orderType: null, amount: ''});
   }
 
   public cancelTrade = (openTrade) => ({}) => {
@@ -154,6 +168,14 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     });
   }
 
+  public handleClose = () => {
+    this.setState({ openDialog: false, orderItem: null,  orderType: null, amount: ''});
+  }
+
+  public handleOpenBuySell  = (item, type) => ({}) => {
+    this.setState({ orderItem: item,  orderType: type, openDialog: true });
+  }
+
   private coinOwnerShipDetailsUI(item) {
     const BUY = 'BUY';
     const SELL = 'SELL';
@@ -181,6 +203,105 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     );
   }
 
+  private dialogBUYUI() {
+    const {orderItem} = this.state;
+    console.log(this.state);
+    return(
+      <Dialog
+          open={true}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Place your buy order on the exchange</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please check all the prices and details are correct, adjust if necessary
+            </DialogContentText>
+            <Typography>Placing order for: {orderItem.name}</Typography>
+            <TextField
+              autoFocus={true}
+              margin="dense"
+              id="number"
+              label="Amount"
+              value={this.state.amount}
+              onKeyPress={this.handleKeyPress}
+              onChange={this.handleChange('amount')}
+              type="number"
+              fullWidth={true}
+            />
+            <TextField
+              autoFocus={true}
+              margin="dense"
+              id="exchange"
+              disabled={true}
+              label="Exchange"
+              value="Bittrex Exchange"
+              onKeyPress={this.handleKeyPress}
+              fullWidth={true}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.placeBuyTrade(orderItem, orderItem.price_btc, Number(this.state.amount)
+              , 1)} color="primary">
+              PlACE BUY ORDER
+            </Button>
+          </DialogActions>
+        </Dialog>
+    );
+  }
+
+  private dialogSELLUI() {
+    const {orderItem} = this.state;
+    return(
+      <Dialog
+          open={true}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Place your sell order on the exchange</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Please check all the prices and details are correct, adjust if necessary
+            </DialogContentText>
+            <Typography>Placing order for: {orderItem.name}</Typography>
+            <TextField
+              autoFocus={true}
+              margin="dense"
+              id="number"
+              label="Amount"
+              value={this.state.amount}
+              onKeyPress={this.handleKeyPress}
+              onChange={this.handleChange('amount')}
+              type="number"
+              fullWidth={true}
+            />
+            <TextField
+              autoFocus={true}
+              margin="dense"
+              id="exchange"
+              disabled={true}
+              label="Exchange"
+              value="Bittrex Exchange"
+              onKeyPress={this.handleKeyPress}
+              fullWidth={true}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.placeSellTrade(orderItem, orderItem.price_btc,
+              Number(this.state.amount), 1)} color="primary">
+              PlACE SELL ORDER
+            </Button>
+          </DialogActions>
+        </Dialog>
+    );
+  }
+
   private coinBuySellUI(item) {
     const { classes } = this.props as any;
 
@@ -189,7 +310,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
         <Grid key={item.id + 'BuyButton'} item={true} xs={3}>
           <Button fullWidth={true} variant="flat"
               size="small" color="primary" className={classes.button}
-              onClick={this.placeBuyTrade(item, 1, item.price_btc, 1)} >
+              onClick={this.handleOpenBuySell(item, 'BUY')} >
               Place Buy Order
           </Button>
         </Grid>
@@ -197,7 +318,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
         <Grid key={item.id + 'SellButton'} item={true} xs={3}>
           <Button fullWidth={true} variant="flat"
               size="small" color="primary" className={classes.button}
-              onClick={this.placeSellTrade(item, 1, item.price_btc, 1)} >
+              onClick={this.handleOpenBuySell(item, 'SELL')} >
               Place Sell Order
           </Button>
         </Grid>
@@ -253,7 +374,8 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
                   <Paper className={classes.paper}>
                   <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
                   <Typography>{itema.name}</Typography>
-                  <Typography>{itema.price_usd}</Typography>
+                  <Typography>{itema.price_usd} USD</Typography>
+                  <Typography>{itema.price_btc} BTC</Typography>
                   {member.sessionID && member.openTrades[itema.symbol] ? this.coinOwnerShipDetailsUI(itema) : null}
                   {member.sessionID ? this.coinBuySellUI(itema) : null}
                   </Paper>
@@ -267,6 +389,8 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     return (
       <div className={style.Home}>
         <Grid container={true} spacing={24} alignItems="stretch" direction="column" justify="center">
+        {this.state.orderType === 'BUY' ? this.dialogBUYUI() : null}
+        {this.state.orderType === 'SELL' ? this.dialogSELLUI() : null}
           <Grid key="SearchBar" item={true} xs={12}>
           {searchBar}
           </Grid>
