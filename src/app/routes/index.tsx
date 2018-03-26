@@ -3,6 +3,7 @@ import { IndexRoute, Route } from 'react-router';
 import { Member } from 'containers';
 import App from 'containers/App';
 import Login from 'containers/Login';
+import Register from 'containers/Register';
 import Home from 'containers/Home';
 
 export default (
@@ -10,5 +11,6 @@ export default (
     <IndexRoute component={Home} />
     <Route path="login" component={Login} />
     <Route path="member" component={Member} />
+    <Route path="register" component={Register} />
   </Route>
 );
