@@ -40,6 +40,12 @@ class Member extends React.Component<IProps, IState> {
     changePassword(this.state.newName);
   }
 
+  public lockAccount = () => {
+    const {lockAccount, logout} = this.props;
+    lockAccount('True');
+    logout();
+  }
+
   public componentDidUpdate(prevProps) {
     const pSessionID = prevProps.member.sessionID;
     const cSessionID = this.props.member.sessionID;
@@ -51,7 +57,7 @@ class Member extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactElement<{}> {
-    const { logout, lockAccount, member} = this.props;
+    const { logout, member} = this.props;
 
     return (
       <div className={style.Member}>
@@ -70,7 +76,7 @@ class Member extends React.Component<IProps, IState> {
 
          <button
           name="lockaccount"
-          onClick={lockAccount}
+          onClick={this.lockAccount}
           disabled={member.sessionID === null}>
           lockAccount
         </button>
