@@ -1,11 +1,37 @@
-export interface ICoin {
-    rate: number;
-    average: number;
-    high: number;
-    low: number;
-    timeLastUpdated: Date;
-    exchanges: string[];
-    history: ICoinDetails[];
+  export interface ICoins {
+    coins: ICoin[];
+    request: {
+      message?: any;
+      isFetching: boolean;
+      error: boolean;
+    };
+  }
+
+  export interface ICoin {
+    // Orignal Design
+    rate?: number;
+    average?: number;
+    high?: number;
+    low?: number;
+    timeLastUpdated: number;
+    exchanges?: string[];
+    history?: ICoinDetails[];
+    // Special Case from API
+    id: string;
+    name: string;
+    symbol: string;
+    rank: number;
+    price_usd: number;
+    price_btc: number;
+    volume_usd: number; // 24 Hour
+    market_usd: number;
+    available_supply: number;
+    total_supply: number;
+    max_supply: number;
+    percentage_change_1h: number;
+    percentage_change_24h: number;
+    percetange_change_7d: number;
+
   }
 
   export interface ICoinDetails { // All the historical records of prices
@@ -13,7 +39,7 @@ export interface ICoin {
     average: number;
     high: number;
     low: number;
-    time: Date;
+    time: number;
     owner: string; // The history can be 'practice', 'real', or exchangeID
   }
 
@@ -31,8 +57,9 @@ export interface ICoin {
   export interface ICoinAction {
     type: string;
     payload?: {
-      newPassword?: string;
-      newLockDate?: Date;
+      coinRecords?: any;
       message?: any;
+      isFetching?: boolean;
+      error?: boolean;
     };
   }

@@ -52,7 +52,6 @@ class Login extends React.Component<IProps & WithStyles<'root'>> {
 
   public constructor(props) {
     super(props);
-    console.log(props);
   }
 
   public state = {
@@ -80,8 +79,6 @@ class Login extends React.Component<IProps & WithStyles<'root'>> {
         }
     }
   }
-
-  // {member.request.isFetching ? 'Loging in' : member.username}
 
   public render() {
     // const { member } = this.props;

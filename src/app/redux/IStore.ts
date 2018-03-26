@@ -1,9 +1,7 @@
-import { ICounter } from 'models/counter';
-import { IStars } from 'models/stars';
 import { IMember } from 'models/member';
+import { ICoins } from 'models/coin';
 
 export interface IStore {
-  counter: ICounter;
-  stars: IStars;
   member: IMember;
+  coins: ICoins;
 };

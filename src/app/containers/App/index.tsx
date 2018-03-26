@@ -118,7 +118,6 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
 
   public constructor(props) {
     super(props);
-    console.log('Nesh', this.props);
   }
 
   public humanize(str) {
