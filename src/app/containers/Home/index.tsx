@@ -105,19 +105,19 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     });
   }
 
-  public placeBuyTrade = () => {
+  public placeBuyTrade = (coin, rate, exchangeID) => ({}) =>  {
     const {placeBuyTrade} = this.props;
-    placeBuyTrade();
+    placeBuyTrade(coin, rate, exchangeID);
   }
 
-  public placeSellTrade = () => {
+  public placeSellTrade = (coin, rate, exchangeID) => ({}) => {
     const {placeSellTrade} = this.props;
-    placeSellTrade();
+    placeSellTrade(coin, rate, exchangeID);
   }
 
-  public cancelTrade = () => {
+  public cancelTrade = (openTrade) => ({}) => {
     const {cancelTrade} = this.props;
-    cancelTrade();
+    cancelTrade(openTrade);
   }
 
   public handleKeyPress = () => (event) => {
@@ -152,23 +152,6 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     const { coins } = this.props;
 
     const member = this.props.member as any;
-
-    const buysell = (
-      <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
-        <Grid key="BuyButton" item={true} xs={3}>
-          <Button fullWidth={true} variant="flat"
-              size="small" color="primary" className={classes.button} onClick={this.placeBuyTrade} >
-              Place Buy Order
-          </Button>
-        </Grid>
-        <Grid key="BuyButton" item={true} xs={3}>
-          <Button fullWidth={true} variant="flat"
-              size="small" color="primary" className={classes.button} onClick={this.placeBuyTrade} >
-              Place Sell Order
-          </Button>
-        </Grid>
-      </Grid>
-    );
 
     const searchBar = (
       <div >
@@ -212,7 +195,24 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
                   <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
                   <Typography>{itema.name}</Typography>
                   <Typography>{itema.price_usd}</Typography>
-                  {member.sessionID ? buysell : null}
+                  {member.sessionID ? (
+                    <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
+                    <Grid key={itema.id + 'BuyButton'} item={true} xs={3}>
+                      <Button fullWidth={true} variant="flat"
+                          size="small" color="primary" className={classes.button}
+                          onClick={this.placeBuyTrade(itema, itema.price_btc, 1)} >
+                          Place Buy Order
+                      </Button>
+                    </Grid>
+                    <Grid key={itema.id + 'SellButton'} item={true} xs={3}>
+                      <Button fullWidth={true} variant="flat"
+                          size="small" color="primary" className={classes.button}
+                          onClick={this.placeSellTrade(itema, itema.price_btc, 1)} >
+                          Place Sell Order
+                      </Button>
+                    </Grid>
+                   </Grid>
+                 ) : null}
                   </Paper>
                 </Grid>
             );
