@@ -204,7 +204,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
         {member.member.sessionID ? accountmenuitem : loginmenuitem}
-        {registermenuitem}
+        {!member.member.sessionID ? registermenuitem : null}
       </MenuList>
       </Drawer>
     );
