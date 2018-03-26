@@ -22,6 +22,8 @@ import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
 import SendIcon from 'material-ui-icons/Send';
 
+import Grid from 'material-ui/Grid';
+
 const { connect } = require('react-redux');
 export interface IProps {
   member: IMember;
@@ -53,7 +55,7 @@ const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'the
     marginRight: 20,
   },
   appBar: {
-    position: 'absolute',
+    position: 'fixed',
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -73,7 +75,7 @@ const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'the
     display: 'none',
   },
   drawerPaper: {
-    position: 'relative',
+    position: 'fixed',
     width: drawerWidth,
   },
   drawerHeader: {
@@ -84,6 +86,7 @@ const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'the
     ...theme.mixins.toolbar,
   },
   content: {
+    zIndex: 3,
     marginTop: 65,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
@@ -149,6 +152,9 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
   public render() {
 
     const { classes } = this.props as any;
+    if (classes === null) {
+      console.log('The classes are null');
+    }
     const member = this.props.member as any;
     const { anchor, open } = this.state as any;
 
@@ -217,7 +223,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
               </Toolbar>
             </AppBar>
             {drawer}
-            <main
+            <div
                 className={classnames({
                   [`${classes.content}`]: true,
                   [`${classes.contentLeft}`]: true,
@@ -225,8 +231,8 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
                   [`${classes.contentShiftLeft}`]: open,
                 })}
               >
-              {this.props.children}
-          </main>
+                {this.props.children}
+          </div>
           </div>
       </div>
       </section>
