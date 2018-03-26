@@ -15,3 +15,6 @@ The test login details are:
 
 username: test
 password: test1234
+
+
+CoinMarket API implemented on homepage, minor theme bug where its not proper until refresh, will look at why tomorrow
