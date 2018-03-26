@@ -18,9 +18,10 @@ const classnames = require('classnames');
 
 import { MenuList, MenuItem } from 'material-ui/Menu';
 import { ListItemIcon, ListItemText } from 'material-ui/List';
-import InboxIcon from 'material-ui-icons/MoveToInbox';
-import DraftsIcon from 'material-ui-icons/Drafts';
+import HomeIcon from 'material-ui-icons/Home';
 import SendIcon from 'material-ui-icons/Send';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+import DraftsIcon from 'material-ui-icons/Drafts';
 
 const { connect } = require('react-redux');
 export interface IProps {
@@ -161,7 +162,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
     const loginmenuitem = (
       <MenuItem component={Link} {...{ to: 'login' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
-            <DraftsIcon />
+            <SendIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
       </MenuItem>
@@ -179,7 +180,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
     const accountmenuitem = (
       <MenuItem component={Link} {...{ to: 'member' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
-            <InboxIcon />
+            <AccountCircle />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
       </MenuItem>
@@ -199,7 +200,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
         <MenuList>
         <MenuItem component={Link} {...{ to: '/' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
-            <SendIcon />
+            <HomeIcon />
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
