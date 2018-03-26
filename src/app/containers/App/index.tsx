@@ -22,6 +22,8 @@ import InboxIcon from 'material-ui-icons/MoveToInbox';
 import DraftsIcon from 'material-ui-icons/Drafts';
 import SendIcon from 'material-ui-icons/Send';
 
+import TextField from 'material-ui/TextField';
+
 const { connect } = require('react-redux');
 export interface IProps {
   member: IMember;
@@ -108,6 +110,31 @@ const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'the
   contentShiftLeft: {
     marginLeft: 0,
   },
+  formControl: {
+    margin: theme.spacing.unit,
+  },
+  textFieldRoot: {
+    'padding': 0,
+    'label + &': {
+      marginTop: theme.spacing.unit * 3,
+    },
+  },
+  textFieldInput: {
+    'borderRadius': 4,
+    'backgroundColor': theme.palette.common.white,
+    'border': '1px solid #ced4da',
+    'fontSize': 16,
+    'padding': '10px 12px',
+    'width': 'calc(100% - 24px)',
+    'transition': theme.transitions.create(['border-color', 'box-shadow']),
+    '&:focus': {
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+  searchContainer: {
+    'text-align': 'right',
+  },
 });
 @connect(
   (state) => ({counter: state.counter, member: state }),
@@ -139,6 +166,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
   public state = {
     auth: true,
     open: false,
+    searchTerm: 'Enter coin name...',
   };
 
   private handleDrawerOpen = () => {
@@ -157,6 +185,24 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
     }
     const member = this.props.member as any;
     const { anchor, open } = this.state as any;
+
+    const searchBar = (
+      <div >
+        <form className={classes.searchContainer} noValidate={true} autoComplete="off">
+          <TextField
+            defaultValue={this.state.searchTerm}
+            id="bootstrap-input"
+            InputProps={{
+              disableUnderline: true,
+              classes: {
+                root: classes.textFieldRoot,
+                input: classes.textFieldInput,
+              },
+            }}
+          />
+        </form>
+      </div>
+    );
 
     const loginmenuitem = (
       <MenuItem component={Link} {...{ to: 'login' }} className={classes.menuItem}>
@@ -200,7 +246,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
     );
 
     return (
-    <section className={style.AppContainer}>
+    <div className={style.AppContainer}>
     <Helmet {...appConfig.app} {...appConfig.app.head}/>
       <div className={classes.root}>
           <div className={classes.appFrame}>
@@ -220,6 +266,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
                 <Typography variant="title" color="inherit" noWrap={true}>
                 {this.humanize(this.props.location.pathname)}
                 </Typography>
+                {searchBar}
               </Toolbar>
             </AppBar>
             {drawer}
@@ -231,11 +278,11 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
                   [`${classes.contentShiftLeft}`]: open,
                 })}
               >
-                <div>{this.props.children}</div>
+              {this.props.children}
           </div>
           </div>
       </div>
-      </section>
+      </div>
     );
   }
 }
