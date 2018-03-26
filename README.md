@@ -14,7 +14,7 @@ E.g https://material-ui-next.com/demos/app-bar/ one of the components available
 The test login details are:
 
 username: test
-password: test123
+password: test1234
 
 
 CoinMarket API implemented on homepage
