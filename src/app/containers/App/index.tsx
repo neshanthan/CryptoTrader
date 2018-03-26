@@ -167,6 +167,15 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
       </MenuItem>
     );
 
+    const registermenuitem = (
+      <MenuItem component={Link} {...{ to: 'register' }} className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Register" />
+      </MenuItem>
+    );
+
     const accountmenuitem = (
       <MenuItem component={Link} {...{ to: 'member' }} className={classes.menuItem}>
           <ListItemIcon className={classes.icon}>
@@ -195,6 +204,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
         {member.member.sessionID ? accountmenuitem : loginmenuitem}
+        {registermenuitem}
       </MenuList>
       </Drawer>
     );
