@@ -14,7 +14,11 @@ E.g https://material-ui-next.com/demos/app-bar/ one of the components available
 The test login details are:
 
 username: test
-password: test1234
+password: test123
 
 
-CoinMarket API implemented on homepage, minor theme bug where its not proper until refresh, will look at why tomorrow
+CoinMarket API implemented on homepage
+
+Cryptocurrency icons from https://github.com/cjdowner/cryptocurrency-icons used
+
+Use Chrome Developer tools, too see how layout will look
