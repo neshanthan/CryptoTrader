@@ -31,7 +31,7 @@ class Member extends React.Component<IProps, IState> {
   public constructor(props) {
     super(props);
     this.state = {
-      newName: 'Finally Works',
+      newName: 'Password Changed',
     };
   }
 
@@ -57,19 +57,19 @@ class Member extends React.Component<IProps, IState> {
       <div className={style.Member}>
       <br/>
         <button
-          name="incBtn"
+          name="logout"
           onClick={logout}>
           Logout
         </button>
         <button
-          name="decBtn"
+          name="changepassowrd"
           onClick={this.changePassword}
           disabled={member.sessionID === null}>
           changePassword
         </button>
 
          <button
-          name="decBtn"
+          name="lockaccount"
           onClick={lockAccount}
           disabled={member.sessionID === null}>
           lockAccount

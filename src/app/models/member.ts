@@ -6,7 +6,7 @@ export interface IMember {
   username: string;
   password: string;
   pII: IMemberPII; // All member personally identifiable information
-  lockUntilDate: Date;
+  lockUntilDate: boolean;
   spendingLimit: number;
   spendingLimitResetDate: string;
   prefferedFiat: string;

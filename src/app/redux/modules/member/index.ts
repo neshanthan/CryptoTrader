@@ -30,7 +30,7 @@ const initialState: IMember = {
   username: 'thomas',
   password: 'test1234',
   pII: null,
-  lockUntilDate: new Date(),
+  lockUntilDate: false,
   spendingLimit: 2,
   spendingLimitResetDate: 'asd',
   prefferedFiat: 'asd',
@@ -69,7 +69,7 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
     case LOCKACCOUNT:
       return {
         ...state,
-        lockUntilDate: action.payload.newLockDate,
+        lockUntilDate: true,
       };
 
     case REQUESTSTART:

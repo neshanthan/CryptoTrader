@@ -75,8 +75,14 @@ class Login extends React.Component<IProps & WithStyles<'root'>> {
   }
 
   public login = () => {
-    const {login} = this.props;
-    login(this.state.username, this.state.password);
+    const {login, member} = this.props;
+    if (member.lockUntilDate === true) {
+      this.setState({errorDialog: true, errorMessage: 'Account has been locked please wait 5 days'});
+      resetRequest();
+    } else {
+      login(this.state.username, this.state.password);
+    }
+
   }
 
   public componentWillUpdate(nextProps) {
