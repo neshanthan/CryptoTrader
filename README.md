@@ -21,4 +21,4 @@ CoinMarket API implemented on homepage
 
 Cryptocurrency icons from https://github.com/cjdowner/cryptocurrency-icons used
 
-Use Chrome Developer tools, too see how layout will look
+Use Chrome Developer tools, too see how layout will look (Right click, inspect element, pick responsive and adjust to your screen size)
