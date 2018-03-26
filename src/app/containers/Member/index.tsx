@@ -10,6 +10,7 @@ interface IProps {
   logout: Redux.ActionCreator<IMemberAction>;
   changePassword: Redux.ActionCreator<IMemberAction>;
   lockAccount: Redux.ActionCreator<IMemberAction>;
+  router: any;
 }
 
 interface IState {
@@ -37,6 +38,16 @@ class Member extends React.Component<IProps, IState> {
   public changePassword = () => {
     const {changePassword} = this.props;
     changePassword(this.state.newName);
+  }
+
+  public componentDidUpdate(prevProps) {
+    const pSessionID = prevProps.member.sessionID;
+    const cSessionID = this.props.member.sessionID;
+    if (!this.props.member.request.error) {
+        if (pSessionID !== null && cSessionID === null) {
+          this.props.router.push('/');
+        }
+    }
   }
 
   public render(): React.ReactElement<{}> {
