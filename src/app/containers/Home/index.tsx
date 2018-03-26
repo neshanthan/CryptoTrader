@@ -96,9 +96,23 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     });
   }
 
-  private makeEmpty = (name) => ({}) => {
+  public handleKeyPress = () => (event) => {
+    // User should not use [Enter] to submit
+      if (event.keyCode === 13) {
+        event.preventDefault();
+      }
+    }
+
+  private defaultSearch = (name) => ({}) => {
+    const cSearchTerm = this.state.searchTerm;
+    let nSearchTerm = cSearchTerm;
+    if (cSearchTerm === 'Enter coin name...') {
+      nSearchTerm = '';
+    } else if (cSearchTerm === '') {
+      nSearchTerm = 'Enter coin name...';
+    }
     this.setState({
-      [name]: '',
+      [name]: nSearchTerm,
     });
   }
 
@@ -114,7 +128,9 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
             value={this.state.searchTerm}
             id="bootstrap-input"
             onChange={this.handleChange('searchTerm')}
-            onClick={this.makeEmpty('searchTerm')}
+            onClick={this.defaultSearch('searchTerm')}
+            onMouseOut={this.defaultSearch('searchTerm')}
+            onKeyDown={this.handleKeyPress()}
             InputProps={{
               disableUnderline: true,
               classes: {
@@ -127,20 +143,30 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
       </div>
     );
 
-    console.log(coins);
     let allcoins = null;
     if (coins.coins !== null) {
        allcoins = (
         coins.coins.map( (itema) => {
-          return (
-              <Grid key={itema.id} item={true} xs={12}>
-                <Paper className={classes.paper}>
-                <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
-                <Typography>{itema.name}</Typography>
-                <Typography>{itema.price_usd}</Typography>
-                </Paper>
-              </Grid>
-          );
+          const searchTerm = this.state.searchTerm.toLowerCase();
+          let shouldReturn = false;
+          if (searchTerm === 'enter coin name...' || searchTerm === '') {
+            shouldReturn = true;
+          } else if (itema.name.toLowerCase().startsWith(searchTerm) ||
+            itema.symbol.toLowerCase().startsWith(searchTerm)) {
+            shouldReturn = true;
+          }
+
+          if (shouldReturn) {
+            return (
+                <Grid key={itema.id} item={true} xs={12}>
+                  <Paper className={classes.paper}>
+                  <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
+                  <Typography>{itema.name}</Typography>
+                  <Typography>{itema.price_usd}</Typography>
+                  </Paper>
+                </Grid>
+            );
+          }
         },
       ));
     }
