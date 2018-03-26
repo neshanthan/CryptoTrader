@@ -2,12 +2,14 @@ import * as React from 'react';
 import { IMember } from 'models/member';
 import { updateCoins } from 'modules/coin';
 import { ICoins, ICoinAction } from 'models/coin';
+import { placeBuyTrade, placeSellTrade, cancelTrade, resetRequest } from 'modules/member';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
 import withRoot from '../withRoot';
 import Grid from 'material-ui/Grid';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
+import Button from 'material-ui/Button';
 const { connect } = require('react-redux');
 const { asyncConnect } = require('redux-connect');
 
@@ -61,6 +63,9 @@ interface IProps {
   member: IMember;
   coins: ICoins;
   updateCoins: Redux.ActionCreator<ICoinAction>;
+  placeBuyTrade: Redux.ActionCreator<ICoinAction>;
+  placeSellTrade: Redux.ActionCreator<ICoinAction>;
+  cancelTrade: Redux.ActionCreator<ICoinAction>;
 }
 @asyncConnect([{
   promise: ({ store: { dispatch } }) => {
@@ -71,6 +76,10 @@ interface IProps {
   (state) => ({ coins: state.coins, member: state.member }),
   (dispatch) => ({
     updateCoins: () => dispatch(updateCoins()),
+    placeBuyTrade: (coin, rate, exchangeID) => dispatch(placeBuyTrade(coin, rate, exchangeID)),
+    placeSellTrade: (coin, rate, exchangeID) => dispatch(placeSellTrade(coin, rate, exchangeID)),
+    cancelTrade: (openTrade) => dispatch(cancelTrade(openTrade)),
+    resetRequest: () => dispatch(resetRequest()),
   }),
 )
 
@@ -96,6 +105,21 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     });
   }
 
+  public placeBuyTrade = () => {
+    const {placeBuyTrade} = this.props;
+    placeBuyTrade();
+  }
+
+  public placeSellTrade = () => {
+    const {placeSellTrade} = this.props;
+    placeSellTrade();
+  }
+
+  public cancelTrade = () => {
+    const {cancelTrade} = this.props;
+    cancelTrade();
+  }
+
   public handleKeyPress = () => (event) => {
     // User should not use [Enter] to submit
       if (event.keyCode === 13) {
@@ -103,7 +127,13 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
       }
     }
 
-  private defaultSearch = (name) => ({}) => {
+    private defaultSearchClick = (name) => ({}) => {
+      this.setState({
+        [name]: '',
+      });
+    }
+
+  public defaultSearch = (name) => ({}) => {
     const cSearchTerm = this.state.searchTerm;
     let nSearchTerm = cSearchTerm;
     if (cSearchTerm === 'Enter coin name...') {
@@ -121,6 +151,25 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     const { classes } = this.props as any;
     const { coins } = this.props;
 
+    const member = this.props.member as any;
+
+    const buysell = (
+      <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
+        <Grid key="BuyButton" item={true} xs={3}>
+          <Button fullWidth={true} variant="flat"
+              size="small" color="primary" className={classes.button} onClick={this.placeBuyTrade} >
+              Place Buy Order
+          </Button>
+        </Grid>
+        <Grid key="BuyButton" item={true} xs={3}>
+          <Button fullWidth={true} variant="flat"
+              size="small" color="primary" className={classes.button} onClick={this.placeBuyTrade} >
+              Place Sell Order
+          </Button>
+        </Grid>
+      </Grid>
+    );
+
     const searchBar = (
       <div >
         <form noValidate={true} autoComplete="off">
@@ -128,7 +177,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
             value={this.state.searchTerm}
             id="bootstrap-input"
             onChange={this.handleChange('searchTerm')}
-            onClick={this.defaultSearch('searchTerm')}
+            onClick={this.defaultSearchClick('searchTerm')}
             onMouseOut={this.defaultSearch('searchTerm')}
             onKeyDown={this.handleKeyPress()}
             InputProps={{
@@ -163,6 +212,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
                   <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
                   <Typography>{itema.name}</Typography>
                   <Typography>{itema.price_usd}</Typography>
+                  {member.sessionID ? buysell : null}
                   </Paper>
                 </Grid>
             );

@@ -33,6 +33,7 @@ const initialState: IMember = {
   spendingLimitResetDate: 'asd',
   prefferedFiat: 'asd',
   sessionID: null,
+  openTrades: [],
   type: 'real',
   request: {
     isFetching: false,
@@ -107,6 +108,32 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
         },
     };
 
+    case PLACEBUYTRADE:
+      state.openTrades.push(action.payload.openTrade);
+      return {
+        ...state,
+        OpenTrades: state.openTrades,
+    };
+
+    case PLACESELLTRADE:
+      state.openTrades.push(action.payload.openTrade);
+      return {
+        ...state,
+        OpenTrades: state.openTrades,
+    };
+
+    case CANCELTRADE:
+      state.openTrades.map((item, index) => {
+        if (item === action.payload.openTrade) {
+          state.openTrades.splice(index, 1);
+        }
+      });
+
+      return {
+        ...state,
+        OpenTrades: state.openTrades,
+    };
+
     default:
       return state;
   }
@@ -162,29 +189,43 @@ export function deposit(coin: ICoin, amount: number, address: string, exchangeID
 }
 
 /** Action Creator: Place buy order into the users exchange account/ pick which API money is going too */
-export function placeBuyTrade(coin: ICoin, rate: number, address: string, exchangeID: string): IMemberAction {
+export function placeBuyTrade(coin: ICoin, rate: number, exchangeID: number): IMemberAction {
   // Place order on on exchange and update account by creating open trade to show that it has placeed
+  const openTradeA = {
+    ID: 'RAND91203',
+    coin,
+    exchangeID,
+    rate,
+    currencyPairUsed: 'USD',
+    type: 'BUY',
 
-  console.log('Place Buy Trade Debug', coin, rate, address, exchangeID); // Debug
+  };
 
   return {
     type: PLACEBUYTRADE,
     payload: {
-      newPassword: 'delete this',
+      openTrade: openTradeA,
     },
   };
 }
 
 /** Action Creator: Place Sell order into the users exchange account/ pick which API money is going too */
-export function placeSellTrade(coin: ICoin, rate: number, address: string, exchangeID: string): IMemberAction {
+export function placeSellTrade(coin: ICoin, rate: number, exchangeID: number): IMemberAction {
   // Place order on on exchange and update account by creating open trade to show that it has placeed
+  const openTradeA = {
+    ID: 'RAND91203',
+    coin,
+    exchangeID,
+    rate,
+    currencyPairUsed: 'USD',
+    type: 'SELL',
 
-  console.log('Place Sell Trade Debug', coin, rate, address, exchangeID); // Debug
+  };
 
   return {
     type: PLACESELLTRADE,
     payload: {
-      newPassword: 'delete this',
+      openTrade: openTradeA,
     },
   };
 }
@@ -193,12 +234,10 @@ export function placeSellTrade(coin: ICoin, rate: number, address: string, excha
 export function cancelTrade(openTrade: IOpenTrade): IMemberAction {
   // Cancel trade on on exchange and update account by removing open trade to show that it is rremoved
 
-  console.log('Cancel Trade Debug', openTrade); // Debug
-
   return {
     type: CANCELTRADE,
     payload: {
-      newPassword: 'delete this',
+      openTrade,
     },
   };
 }
@@ -210,9 +249,9 @@ export function cancelTrade(openTrade: IOpenTrade): IMemberAction {
     console.log('Add Alert Debug', type, pricepercentage, coin); // Debug
 
     return {
-      type: CANCELTRADE,
+      type: ADDALERT,
       payload: {
-        newPassword: 'delete this',
+        temp: 'Add Alert',
       },
     };
   }
@@ -224,9 +263,9 @@ export function removeAlert(alert: IAlert): IMemberAction {
   console.log('Delete Alert Debug', alert); // Debug
 
   return {
-    type: CANCELTRADE,
+    type: REMOVEALERT,
     payload: {
-      newPassword: 'delete this',
+      newPassword: 'Remove Alert',
     },
   };
 }

@@ -12,7 +12,7 @@ export interface IMember {
   prefferedFiat: string;
   sessionID: string;
   coinPortfolio?: ICoinRecord[];
-  openTrade?: IOpenTrade[]; // Can have 0 or many open trades
+  openTrades?: IOpenTrade[]; // Can have 0 or many open trades
   type: string; // If its real or practiseMember
   request: {
     message?: any;
@@ -24,6 +24,8 @@ export interface IMember {
 export interface IMemberAction {
   type: string;
   payload?: {
+    openTrade?: IOpenTrade;
+    temp?: any;
     newPassword?: string;
     sessionID?: string;
     newLockDate?: Date;

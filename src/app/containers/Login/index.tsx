@@ -8,7 +8,6 @@ import Paper from 'material-ui/Paper';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import Grid from 'material-ui/Grid';
-import Divider from 'material-ui/Divider';
 import Snackbar from 'material-ui/Snackbar';
 import Fade from 'material-ui/transitions/Fade';
 // const { asyncConnect } = require('redux-connect');
@@ -131,7 +130,6 @@ class Login extends React.Component<IProps & WithStyles<'root'>> {
                         margin="normal"
               />
             </Grid>
-            <Divider/>
             <Grid item={true} xs={6}>
               <TextField
                     id="password-input"
@@ -143,7 +141,6 @@ class Login extends React.Component<IProps & WithStyles<'root'>> {
                     margin="normal"
             />
           </Grid>
-          <Divider/>
           <Grid item={true} xs={6}>
             <Button fullWidth={true} variant="raised"
             size="large" color="primary" className={classes.button} onClick={this.login} >
