@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { IndexRoute, Route } from 'react-router';
-import { Home, Login, Member } from 'containers';
+import { Home, Member } from 'containers';
 import App from 'containers/App';
+import Login from 'containers/Login';
 
 export default (
   <Route path="/" component={App}>

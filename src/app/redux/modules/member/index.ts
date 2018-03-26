@@ -5,6 +5,7 @@ import { IAlert } from 'models/alert';
 
 /** Action Types */
 export const LOGIN: string = 'member/LOGIN';
+export const LOGINSESSION: string = 'member/LOGINSESSION';
 export const LOGOUT: string = 'member/LOGOUT';
 export const CHANGEPASSWORD: string = 'member/CHANGEPASSWORD';
 export const LOCKACCOUNT: string = 'member/LOCKACCOUNT';
@@ -30,7 +31,7 @@ const initialState: IMember = {
   spendingLimit: 2,
   spendingLimitResetDate: 'asd',
   prefferedFiat: 'asd',
-  sessionID: 'asd',
+  sessionID: null,
   type: 'real',
   request: {
     isFetching: false,
@@ -42,6 +43,13 @@ const initialState: IMember = {
 export function memberReducer(state = initialState, action?: IMemberAction) {
 
   switch (action.type) {
+
+    case LOGINSESSION:
+      return {
+        ...state,
+        sessionID: action.payload.sessionID,
+      };
+
     case LOGOUT:
       return {
         ...state,
@@ -259,10 +267,21 @@ export function login(username, password) {
   return (dispatch: any) => {
     dispatch(requestStart());
     if (username === 'test' && password === 'test1234replacewithhash') {
+      dispatch(loginSession('LOGINSESSIONC(2390234'));
       dispatch(requestSuccess('You have logged into sucessfully'));
     } else {
       dispatch(requestFailure('The username is incorrect'));
     }
+  };
+}
+
+/** Action Creator: Logout the user */
+export function loginSession(sessionID) {
+  return {
+    type: LOGINSESSION,
+    payload: {
+      sessionID,
+    },
   };
 }
 

@@ -10,3 +10,8 @@ Git clone, and then run 'npm install' to install all the required files
 I am using https://material-ui-next.com for the frontend framework, as it will be easier add all the components necessary instead of manually making each one and making it fit the theme.
 
 E.g https://material-ui-next.com/demos/app-bar/ one of the components available
+
+The test login details are:
+
+username: test
+password: test1234

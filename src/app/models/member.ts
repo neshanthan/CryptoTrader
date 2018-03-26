@@ -25,6 +25,7 @@ export interface IMemberAction {
   type: string;
   payload?: {
     newPassword?: string;
+    sessionID?: string;
     newLockDate?: Date;
     message?: any;
     isFetching?: boolean;

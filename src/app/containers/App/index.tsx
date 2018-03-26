@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router';
 import { IMember } from 'models/member';
 import withStyles, { WithStyles, StyleRulesCallback } from 'material-ui/styles/withStyles';
-import withRoot from '../../components/withRoot';
+import withRoot from '../withRoot';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -24,7 +24,7 @@ import SendIcon from 'material-ui-icons/Send';
 
 const { connect } = require('react-redux');
 export interface IProps {
-  memberManager: IMember;
+  member: IMember;
   location: any;
 }
 
@@ -150,8 +150,26 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
   public render() {
 
     const { classes } = this.props as any;
-    // const { classes } = this.props;
+    const member = this.props.member as any;
     const { anchor, open } = this.state as any;
+
+    const loginmenuitem = (
+      <MenuItem component={Link} {...{ to: 'login' }} className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <DraftsIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
+      </MenuItem>
+    );
+
+    const accountmenuitem = (
+      <MenuItem component={Link} {...{ to: 'member' }} className={classes.menuItem}>
+          <ListItemIcon className={classes.icon}>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
+      </MenuItem>
+    );
 
     const drawer = (
       <Drawer variant="persistent" anchor={anchor} open={open} classes={{ paper: classes.drawerPaper}}>
@@ -171,18 +189,7 @@ class App extends React.Component<IProps & WithStyles<'root'>> {
           </ListItemIcon>
           <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Home" />
         </MenuItem>
-        <MenuItem component={Link} {...{ to: 'login' }} className={classes.menuItem}>
-          <ListItemIcon className={classes.icon}>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Login" />
-        </MenuItem>
-        <MenuItem component={Link} {...{ to: 'member' }} className={classes.menuItem}>
-          <ListItemIcon className={classes.icon}>
-            <InboxIcon />
-          </ListItemIcon>
-          <ListItemText classes={{ primary: classes.primary }} inset={true} primary="Account" />
-        </MenuItem>
+        {member.member.sessionID ? accountmenuitem : loginmenuitem}
       </MenuList>
       </Drawer>
     );
