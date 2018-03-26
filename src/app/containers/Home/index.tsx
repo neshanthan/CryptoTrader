@@ -85,7 +85,7 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
 
     return (
       <div className={style.Home}>
-        <Grid container={true} spacing={24} alignItems="center" direction="column" justify="center">
+        <Grid container={true} spacing={24} alignItems="stretch" direction="column" justify="center">
           {allcoins}
       </Grid>
       </div>

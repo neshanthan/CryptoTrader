@@ -86,12 +86,14 @@ const styles: StyleRulesCallback<'root'> = (theme) => ({ // You can use the 'the
     ...theme.mixins.toolbar,
   },
   content: {
-    zIndex: 3,
-    marginTop: 65,
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create('margin', {
+    'marginTop': 65,
+    'flexGrow': 1,
+    'backgroundColor': theme.palette.background.default,
+    'padding-top': theme.spacing.unit * 3,
+    'padding-right': theme.spacing.unit * 3,
+    'padding-bottom': theme.spacing.unit * 3,
+    'padding-left': theme.spacing.unit * 3 + drawerWidth,
+    'transition': theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
