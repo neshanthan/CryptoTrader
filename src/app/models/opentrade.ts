@@ -5,6 +5,7 @@ export interface IOpenTrade {
   coin: ICoin;
   exchangeID: number;
   rate: number;
+  amount: number; // number of coins bought
   currencyPairUsed: string;
   type: string; // Specify whether it is buy or sell trade
 }

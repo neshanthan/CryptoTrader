@@ -10,6 +10,8 @@ import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import Divider from 'material-ui/Divider';
+
 const { connect } = require('react-redux');
 const { asyncConnect } = require('redux-connect');
 
@@ -76,8 +78,8 @@ interface IProps {
   (state) => ({ coins: state.coins, member: state.member }),
   (dispatch) => ({
     updateCoins: () => dispatch(updateCoins()),
-    placeBuyTrade: (coin, rate, exchangeID) => dispatch(placeBuyTrade(coin, rate, exchangeID)),
-    placeSellTrade: (coin, rate, exchangeID) => dispatch(placeSellTrade(coin, rate, exchangeID)),
+    placeBuyTrade: (coin, rate, amount, exchangeID) => dispatch(placeBuyTrade(coin, rate, amount, exchangeID)),
+    placeSellTrade: (coin, rate, amount, exchangeID) => dispatch(placeSellTrade(coin, rate, amount, exchangeID)),
     cancelTrade: (openTrade) => dispatch(cancelTrade(openTrade)),
     resetRequest: () => dispatch(resetRequest()),
   }),
@@ -105,14 +107,20 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     });
   }
 
-  public placeBuyTrade = (coin, rate, exchangeID) => ({}) =>  {
-    const {placeBuyTrade} = this.props;
-    placeBuyTrade(coin, rate, exchangeID);
+  private handleClickBox = (name, itemname) => ({}) => {
+    this.setState({
+      [name]: itemname,
+    });
   }
 
-  public placeSellTrade = (coin, rate, exchangeID) => ({}) => {
+  public placeBuyTrade = (coin, rate, amount, exchangeID) => ({}) =>  {
+    const {placeBuyTrade} = this.props;
+    placeBuyTrade(coin, rate, amount, exchangeID);
+  }
+
+  public placeSellTrade = (coin, rate, amount, exchangeID) => ({}) => {
     const {placeSellTrade} = this.props;
-    placeSellTrade(coin, rate, exchangeID);
+    placeSellTrade(coin, rate, amount, exchangeID);
   }
 
   public cancelTrade = (openTrade) => ({}) => {
@@ -144,6 +152,57 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
     this.setState({
       [name]: nSearchTerm,
     });
+  }
+
+  private coinOwnerShipDetailsUI(item) {
+    const BUY = 'BUY';
+    const SELL = 'SELL';
+
+    // const { classes } = this.props as any;
+    const coinOpenTrades = this.props.member.openTrades[item.symbol];
+    let totalBuyTrades = 0;
+    let totalSellTrades = 0;
+
+    for (const o of coinOpenTrades[BUY]) {
+      totalBuyTrades = totalBuyTrades + o.amount;
+    }
+
+    for (const o of coinOpenTrades[SELL]) {
+      totalSellTrades = totalSellTrades + o.amount;
+    }
+
+    return(
+      <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
+        <Grid key={item.id + 'OwnerShip'} item={true} xs={3}>
+          <Typography>Current Buy Orders:  {totalBuyTrades}</Typography>
+          <Typography>Current Sell Orders: {totalSellTrades}</Typography>
+        </Grid>
+      </Grid>
+    );
+  }
+
+  private coinBuySellUI(item) {
+    const { classes } = this.props as any;
+
+    return(
+      <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
+        <Grid key={item.id + 'BuyButton'} item={true} xs={3}>
+          <Button fullWidth={true} variant="flat"
+              size="small" color="primary" className={classes.button}
+              onClick={this.placeBuyTrade(item, 1, item.price_btc, 1)} >
+              Place Buy Order
+          </Button>
+        </Grid>
+        <Divider />
+        <Grid key={item.id + 'SellButton'} item={true} xs={3}>
+          <Button fullWidth={true} variant="flat"
+              size="small" color="primary" className={classes.button}
+              onClick={this.placeSellTrade(item, 1, item.price_btc, 1)} >
+              Place Sell Order
+          </Button>
+        </Grid>
+      </Grid>
+    );
   }
 
   public render() {
@@ -190,29 +249,13 @@ class Home extends React.Component<IProps & WithStyles<'root'>> {
 
           if (shouldReturn) {
             return (
-                <Grid key={itema.id} item={true} xs={12}>
+                <Grid onClick={this.handleClickBox('searchTerm', itema.name)} key={itema.id} item={true} xs={12}>
                   <Paper className={classes.paper}>
                   <img height="32" width="32" src={require('../assets/icons/' + itema.symbol.toLowerCase() + '.svg')} />
                   <Typography>{itema.name}</Typography>
                   <Typography>{itema.price_usd}</Typography>
-                  {member.sessionID ? (
-                    <Grid container={true} spacing={24} alignItems="center" direction="row" justify="center">
-                    <Grid key={itema.id + 'BuyButton'} item={true} xs={3}>
-                      <Button fullWidth={true} variant="flat"
-                          size="small" color="primary" className={classes.button}
-                          onClick={this.placeBuyTrade(itema, itema.price_btc, 1)} >
-                          Place Buy Order
-                      </Button>
-                    </Grid>
-                    <Grid key={itema.id + 'SellButton'} item={true} xs={3}>
-                      <Button fullWidth={true} variant="flat"
-                          size="small" color="primary" className={classes.button}
-                          onClick={this.placeSellTrade(itema, itema.price_btc, 1)} >
-                          Place Sell Order
-                      </Button>
-                    </Grid>
-                   </Grid>
-                 ) : null}
+                  {member.sessionID && member.openTrades[itema.symbol] ? this.coinOwnerShipDetailsUI(itema) : null}
+                  {member.sessionID ? this.coinBuySellUI(itema) : null}
                   </Paper>
                 </Grid>
             );

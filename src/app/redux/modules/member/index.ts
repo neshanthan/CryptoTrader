@@ -22,11 +22,13 @@ export const REQUESTSTART: string = 'member/REQUESTSTART';
 export const REQUESTSUCCESS: string = 'member/REQUESTSUCCESS';
 export const REQUESTFAILURE: string = 'member/REQUESTFAILURE';
 export const REQUESTRESET: string = 'member/REQUESTRESET';
+export const BUY: string = 'BUY';
+export const SELL: string = 'SELL';
 
 /** Member: Initial State */
 const initialState: IMember = {
-  username: 'Enter Username',
-  password: 'sad',
+  username: 'thomas',
+  password: 'test1234',
   pII: null,
   lockUntilDate: new Date(),
   spendingLimit: 2,
@@ -109,23 +111,39 @@ export function memberReducer(state = initialState, action?: IMemberAction) {
     };
 
     case PLACEBUYTRADE:
-      state.openTrades.push(action.payload.openTrade);
+      let symbol = action.payload.openTrade.coin.symbol;
+      if ( !state.openTrades[symbol]) {
+        state.openTrades[symbol] = [];
+        state.openTrades[symbol][BUY] = [];
+        state.openTrades[symbol][SELL] = [];
+      }
+      state.openTrades[symbol][BUY].push(action.payload.openTrade);
+
       return {
         ...state,
         OpenTrades: state.openTrades,
     };
 
     case PLACESELLTRADE:
-      state.openTrades.push(action.payload.openTrade);
+      symbol = action.payload.openTrade.coin.symbol;
+      if ( !state.openTrades[symbol]) {
+        state.openTrades[symbol] = [];
+        state.openTrades[symbol][BUY] = [];
+        state.openTrades[symbol][SELL] = [];
+      }
+      state.openTrades[symbol][SELL].push(action.payload.openTrade);
+
       return {
         ...state,
         OpenTrades: state.openTrades,
     };
 
     case CANCELTRADE:
-      state.openTrades.map((item, index) => {
+      symbol = action.payload.openTrade.coin.symbol;
+      const oType = symbol = action.payload.openTrade.type;
+      state.openTrades[symbol][oType].map((item, index) => {
         if (item === action.payload.openTrade) {
-          state.openTrades.splice(index, 1);
+          state.openTrades[symbol][oType].splice(index, 1);
         }
       });
 
@@ -189,15 +207,16 @@ export function deposit(coin: ICoin, amount: number, address: string, exchangeID
 }
 
 /** Action Creator: Place buy order into the users exchange account/ pick which API money is going too */
-export function placeBuyTrade(coin: ICoin, rate: number, exchangeID: number): IMemberAction {
+export function placeBuyTrade(coin: ICoin, rate: number, amount: number, exchangeID: number): IMemberAction {
   // Place order on on exchange and update account by creating open trade to show that it has placeed
   const openTradeA = {
     ID: 'RAND91203',
     coin,
     exchangeID,
     rate,
+    amount,
     currencyPairUsed: 'USD',
-    type: 'BUY',
+    type: BUY,
 
   };
 
@@ -210,15 +229,16 @@ export function placeBuyTrade(coin: ICoin, rate: number, exchangeID: number): IM
 }
 
 /** Action Creator: Place Sell order into the users exchange account/ pick which API money is going too */
-export function placeSellTrade(coin: ICoin, rate: number, exchangeID: number): IMemberAction {
+export function placeSellTrade(coin: ICoin, rate: number,  amount: number, exchangeID: number): IMemberAction {
   // Place order on on exchange and update account by creating open trade to show that it has placeed
   const openTradeA = {
     ID: 'RAND91203',
     coin,
     exchangeID,
     rate,
+    amount,
     currencyPairUsed: 'USD',
-    type: 'SELL',
+    type: SELL,
 
   };
 
@@ -265,7 +285,7 @@ export function removeAlert(alert: IAlert): IMemberAction {
   return {
     type: REMOVEALERT,
     payload: {
-      newPassword: 'Remove Alert',
+      temp: 'Remove Alert',
     },
   };
 }
@@ -279,7 +299,7 @@ export function changeDetails(details: IOpenTrade): IMemberAction {
   return {
     type: CHANGEDETAILS,
     payload: {
-      newPassword: 'delete this',
+      temp: 'Change Details',
       },
   };
 }
