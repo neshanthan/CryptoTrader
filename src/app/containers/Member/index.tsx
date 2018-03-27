@@ -2,6 +2,9 @@ import * as React from 'react';
 import { logout, changePassword, lockAccount } from 'modules/member/';
 import { IMember } from 'models/member';
 import { IMemberAction } from 'models/member';
+import Grid from 'material-ui/Grid';
+import Paper from 'material-ui/Paper';
+
 const { connect } = require('react-redux');
 const style = require('./style.css');
 
@@ -61,27 +64,38 @@ class Member extends React.Component<IProps, IState> {
 
     return (
       <div className={style.Member}>
-      <br/>
-        <button
-          name="logout"
-          onClick={logout}>
-          Logout
-        </button>
-        <button
-          name="changepassowrd"
-          onClick={this.changePassword}
-          disabled={member.sessionID === null}>
-          changePassword
-        </button>
-
-         <button
-          name="lockaccount"
-          onClick={this.lockAccount}
-          disabled={member.sessionID === null}>
-          lockAccount
-        </button>
-
-        <p>{member.password}</p>
+      <Grid container={true} spacing={24} alignItems="center" direction="column" justify="center">
+          <Grid item={true} xs={6}>
+          <Paper>
+          <button
+            name="logout"
+            onClick={logout}>
+            Logout
+          </button>
+          </Paper>
+          </Grid>
+          <Grid item={true} xs={6}>
+          <Paper>
+          <button
+            name="changepassowrd"
+            onClick={this.changePassword}
+            disabled={member.sessionID === null}>
+            changePassword
+          </button>
+          </Paper>
+          </Grid>
+          <Grid item={true} xs={6}>
+          <Paper>
+          <button
+            name="lockaccount"
+            onClick={this.lockAccount}
+            disabled={member.sessionID === null}>
+            lockAccount
+          </button>
+          </Paper>
+          </Grid>
+          <p>{member.username}</p>
+        </Grid>
       </div>
     );
   }
